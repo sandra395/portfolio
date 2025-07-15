@@ -1,0 +1,114 @@
+[
+  {
+    "guest_name": "Frank White",
+    "property_name": "Chic Studio Near the Beach",
+    "rating": 4,
+    "comment": "Comment about Chic Studio Near the Beach",
+    "created_at": "2024-03-28T10:15:00Z"
+  },
+  {
+    "guest_name": "Bob Smith",
+    "property_name": "Modern Apartment in City Center",
+    "rating": 2,
+    "comment": "Comment about Modern Apartment in City Center",
+    "created_at": "2024-04-12T14:45:00Z"
+  },
+  {
+    "guest_name": "Rachel Cummings",
+    "property_name": "Luxury Penthouse with View",
+    "rating": 5,
+    "comment": "Comment about Luxury Penthouse with View",
+    "created_at": "2024-06-19T09:30:00Z"
+  },
+  {
+    "guest_name": "Frank White",
+    "property_name": "Elegant City Apartment",
+    "rating": 2,
+    "comment": "Comment about Elegant City Apartment",
+    "created_at": "2024-08-03T16:20:00Z"
+  },
+  {
+    "guest_name": "Rachel Cummings",
+    "property_name": "Cosy Loft in the Heart of the City",
+    "rating": 3,
+    "comment": "Comment about Cosy Loft in the Heart of the City",
+    "created_at": "2024-09-10T11:00:00Z"
+  },
+  {
+    "guest_name": "Bob Smith",
+    "property_name": "Charming Studio Retreat",
+    "rating": 4,
+    "comment": "Comment about Charming Studio Retreat",
+    "created_at": "2024-11-22T13:50:00Z"
+  },
+  {
+    "guest_name": "Frank White",
+    "property_name": "Spacious Countryside House",
+    "rating": 5,
+    "comment": "Comment about Spacious Countryside House",
+    "created_at": "2025-01-15T10:05:00Z"
+  },
+  {
+    "guest_name": "Rachel Cummings",
+    "property_name": "Modern Apartment in City Center",
+    "rating": 3,
+    "comment": "Comment about Modern Apartment in City Center",
+    "created_at": "2025-02-28T08:30:00Z"
+  },
+  {
+    "guest_name": "Frank White",
+    "property_name": "Chic Studio Near the Beach",
+    "rating": 3,
+    "comment": "Comment about Chic Studio Near the Beach",
+    "created_at": "2025-04-04T12:10:00Z"
+  },
+  {
+    "guest_name": "Bob Smith",
+    "property_name": "Cosy Loft in the Heart of the City",
+    "rating": 5,
+    "comment": "Comment about Cosy Loft in the Heart of the City",
+    "created_at": "2025-05-19T17:40:00Z"
+  },
+  {
+    "guest_name": "Rachel Cummings",
+    "property_name": "Luxury Penthouse with View",
+    "rating": 1,
+    "comment": "Comment about Luxury Penthouse with View",
+    "created_at": "2025-06-25T09:55:00Z"
+  },
+  {
+    "guest_name": "Laura Chen",
+    "property_name": "Modern Apartment in City Center",
+    "rating": 4,
+    "comment": "Comment about Modern Apartment in City Center",
+    "created_at": "2024-07-07T15:30:00Z"
+  },
+  {
+    "guest_name": "Michael Harris",
+    "property_name": "Chic Studio Near the Beach",
+    "rating": 5,
+    "comment": "Comment about Chic Studio Near the Beach",
+    "created_at": "2024-10-14T12:00:00Z"
+  },
+  {
+    "guest_name": "Laura Chen",
+    "property_name": "Luxury Penthouse with View",
+    "rating": 5,
+    "comment": "Comment about Luxury Penthouse with View",
+    "created_at": "2025-03-02T14:25:00Z"
+  },
+  {
+    "guest_name": "Michael Harris",
+    "property_name": "Cosy Loft in the Heart of the City",
+    "rating": 4,
+    "comment": "Comment about Cosy Loft in the Heart of the City",
+    "created_at": "2025-04-15T10:45:00Z"
+  },
+  {
+    "guest_name": "Laura Chen",
+    "property_name": "Charming Studio Retreat",
+    "rating": 5,
+    "comment": "Comment about Charming Studio Retreat",
+    "created_at": "2025-06-01T13:30:00Z"
+  }
+]

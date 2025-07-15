@@ -1,0 +1,72 @@
+[
+  {
+    "property_name": "Modern Apartment in City Center",
+    "guest_name": "Bob Smith",
+    "rating": 5,
+    "comment": "Great place to stay! The apartment was clean, modern, and very comfortable. Its location in the heart of the city made it extremely convenient to explore nearby attractions, restaurants, and shops. Would definitely stay here again.",
+    "created_at": "2024-03-15T10:24:00Z"
+  },
+  {
+    "property_name": "Cosy Family House",
+    "guest_name": "Frank White",
+    "rating": 4,
+    "comment": "Lovely house that was just perfect for our family getaway. It had all the amenities we needed and the surrounding neighborhood was quiet and safe. We enjoyed spending evenings in the garden and cooking meals together in the spacious kitchen.",
+    "created_at": "2024-05-20T15:42:00Z"
+  },
+  {
+    "property_name": "Chic Studio Near the Beach",
+    "guest_name": "Sophia Bennett",
+    "rating": 3,
+    "comment": "The studio had a nice design and was very close to the beach, which was great for daytime outings. However, the noise from the street below made it difficult to fully relax in the evenings. Soundproofing could definitely be improved.",
+    "created_at": "2024-06-05T08:30:00Z"
+  },
+  {
+    "property_name": "Elegant City Apartment",
+    "guest_name": "Olivia Taylor",
+    "rating": 4,
+    "comment": "I really enjoyed my stay here. The apartment offered fantastic amenities and had a beautiful interior design. The central location made sightseeing easy, though the living space felt a bit tighter than expected for the price.",
+    "created_at": "2024-07-12T18:15:00Z"
+  },
+  {
+    "property_name": "Charming Studio Retreat",
+    "guest_name": "Bob Smith",
+    "rating": 5,
+    "comment": "A beautiful and peaceful retreat tucked away from the hustle and bustle. The studio was well-appointed, comfortable, and perfect for relaxing. I appreciated the thoughtful touches throughout the space and the great value for the price.",
+    "created_at": "2024-08-22T14:10:00Z"
+  },
+  {
+    "property_name": "Luxury Penthouse with View",
+    "guest_name": "Frank White",
+    "rating": 5,
+    "comment": "The penthouse was simply stunning! From the luxurious furnishings to the breathtaking view of the city skyline, everything exceeded expectations. It was the perfect setting for a romantic getaway or special occasion.",
+    "created_at": "2024-10-01T09:55:00Z"
+  },
+  {
+    "property_name": "Spacious Countryside House",
+    "guest_name": "Sophia Bennett",
+    "rating": 4,
+    "comment": "We loved this spacious countryside house. It was ideal for our family gathering, offering plenty of room both inside and out. However, it was quite far from shops and restaurants, so we had to plan our meals in advance.",
+    "created_at": "2025-01-02T16:40:00Z"
+  },
+  {
+    "property_name": "Seaside Studio Getaway",
+    "guest_name": "Olivia Taylor",
+    "rating": 4,
+    "comment": "This cozy studio was perfect for a quick weekend retreat by the sea. It had everything we needed for a short stay, though the size might feel limiting for longer vacations. The proximity to the beach was definitely a highlight.",
+    "created_at": "2025-02-28T13:00:00Z"
+  },
+  {
+    "property_name": "Cosy Loft in the Heart of the City",
+    "guest_name": "Bob Smith",
+    "rating": 3,
+    "comment": "The loft was comfortable and had a great central location, making it easy to walk to restaurants and attractions. However, it lacked natural light, which made it feel a bit gloomy during the day.",
+    "created_at": "2025-03-30T11:30:00Z"
+  },
+  {
+    "property_name": "Quaint Cottage in the Hills",
+    "guest_name": "Sophia Bennett",
+    "rating": 5,
+    "comment": "This quaint cottage was absolutely lovely, offering a serene and private escape in the hills. We enjoyed the cozy fireplace, scenic surroundings, and charming decor throughout. It was exactly what we needed for a relaxing weekend.",
+    "created_at": "2025-04-15T17:45:00Z"
+  }
+]
