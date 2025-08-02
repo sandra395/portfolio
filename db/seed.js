@@ -116,7 +116,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   );
 
   const { rows: propertyTypeRows } = await db.query(insertPropertyTypesQuery);
-  console.log("Inserted property types:", propertyTypeRows);
+  //console.log("Inserted property types:", propertyTypeRows);
 
 
   // Maps over usersData to create an array of user details, 
@@ -177,7 +177,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
     formattedPropertiesData
   );
   const { rows: propertiesRows } = await db.query(insertPropertiesQuery);
-  console.log("Inserted properties:", propertiesRows);
+  //console.log("Inserted properties:", propertiesRows);
 
 // Make a list to find a property’s ID by its name
   const propertiesRef = {};
@@ -221,7 +221,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
     );
 
   const { rows: ReviewsRows } = await db.query(insertReviewsQuery);
-  console.log("Inserted reviews:", ReviewsRows);
+  //console.log("Inserted reviews:", ReviewsRows);
 
 // For each image, find the property ID by name.
 // If no ID is found, show an error.
@@ -243,7 +243,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
     );
 
     const { rows: ImagesRows } = await db.query(insertImagesQuery);
-  console.log("Inserted images:", ImagesRows);
+  //console.log("Inserted images:", ImagesRows);
 
     // For each favourite, find the guest ID and property ID using their names.
     const formattedFavouritesData = favouritesData
@@ -254,11 +254,11 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
 // Skip favourites if the guest or property ID is missing,
 // show a warning, and only keep valid favorites.
     if (!guest_id) {
-      console.warn(`No user_id found for guest_name: ${guest_name}, skipping favourite.`);
+      //console.warn(`No user_id found for guest_name: ${guest_name}, skipping favourite.`);
       return null;
     }
     if (!property_id) {
-      console.warn(`No property_id found for property_name: ${property_name}, skipping favourite.`);
+      //console.warn(`No property_id found for property_name: ${property_name}, skipping favourite.`);
       return null;
     }
 
@@ -272,7 +272,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   );
 
   const { rows: FavouriteRows } = await db.query(insertFavouritesQuery);
-  console.log("Inserted favourites:", FavouriteRows);
+  //console.log("Inserted favourites:", FavouriteRows);
 
  // For each booking, find the property ID by name.
 // If no ID is found, show a warning and skip that booking.
@@ -280,7 +280,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   .map(({ property_name, guest_name, check_in_date, check_out_date, created_at }) => {
     const property_id = propertiesRef[property_name];
     if (!property_id) {
-      console.warn(`No property_id found for property_name: ${property_name}, skipping booking.`);
+      //console.warn(`No property_id found for property_name: ${property_name}, skipping booking.`);
       return null;
     }
 
@@ -290,7 +290,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
 // Remove any skipped bookings from the list.
     const guest_id = usersRef[guest_name];
     if (!guest_id) {
-      console.warn(`No user_id found for guest_name: ${guest_name}, skipping booking.`);
+      //console.warn(`No user_id found for guest_name: ${guest_name}, skipping booking.`);
       return null;
     }
 
@@ -312,9 +312,9 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
       formattedBookingsData
     );
     const { rows: BookingsRows } = await db.query(insertBookingsQuery);
-    console.log("Inserted bookings:", BookingsRows);
+    //console.log("Inserted bookings:", BookingsRows);
   } else {
-    console.log("No bookings data to insert");
+    //console.log("No bookings data to insert");
   }
 
   // Get just the amenity_slug from each item and put it in an array
@@ -326,7 +326,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   );
   
   const { rows: amenityRows } = await db.query(insertAmenitiesQuery);
-  console.log("Inserted amenities:", amenityRows);
+ // console.log("Inserted amenities:", amenityRows);
   
 
   const insertPropertiesAmenitiesQuery = format(
@@ -335,10 +335,10 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   );
   
   const { rows: propAmenityRows } = await db.query(insertPropertiesAmenitiesQuery);
-  console.log("Inserted properties_amenities:", propAmenityRows);
+  //console.log("Inserted properties_amenities:", propAmenityRows);
   
 
-  
+
   
 
   //const { rows: allPropertyTypes } = await db.query(`SELECT * FROM property_types`);
