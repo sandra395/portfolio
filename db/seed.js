@@ -345,4 +345,6 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   //console.log("All property_types in DB:", allPropertyTypes); //print all the rows from each table after inserting data.
 }
 
+
+
 module.exports = seed;

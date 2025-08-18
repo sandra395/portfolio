@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endpoints</title>
+</head>
+<body>
+    <h1>API Guide: Available Endpoints & Usage </h1>
+    <link rel="stylesheet" href="styles.css">
+<section class="introduction">
+  <p>
+    Welcome to the API Guide! This page shows all the ways you can get information about properties and users. 
+    You will see how to list properties, search by price or type, sort them, see details of a property or user, 
+    add reviews, and delete reviews. Each endpoint has examples to help you understand how it works.
+  </p>
+    </section>
+
+<div class="endpoints-grid">
+<section>
+  <h2>GET /api/properties</h2>
+<p>Send back a response with a list called properties,
+     where each item has the correct details about a property.
+      <p>Endpoint: <code class="endpoint">
+        http://localhost:9090/api/properties</code></p>
+
+     <pre>{
+      "properties": [
+        {
+          "property_id": 2,
+          "property_name": "Cosy Family House",
+          "location": "Manchester, UK",
+          "cost_per_night": 150,
+          "price_per_night": 150,
+          "property_type": "House",
+          "host": "Alice Johnson",
+          "popularity": 4
+        }
+      ]
+    }</pre>
+</section>
+
+<section>
+    <h2>GET /api/properties (maxprice cost per night and minprice cost per night)</h2>
+    <ul>
+      <li>maxprice= shows properties cheaper than this price.</li>
+      <li>?minprice= shows properties more expensive than this price.</li>
+    </ul>
+<p>Example min price endpoint: <code class="endpoint">
+  http://localhost:9090/api/properties?minprice=100</code></p>
+<pre>{
+  "properties": [
+      {
+          "property_id": 2,
+          "property_name": "Cosy Family House",
+          "location": "Manchester, UK",
+          "cost_per_night": 150,
+          "price_per_night": 150,
+          "property_type": "House",
+          "host": "Alice Johnson",
+          "popularity": 4
+      },
+    }
+</pre>
+</section>
+
+<section>
+    <h2>GET /api/properties (property type)</h2>
+<p>?property_type= to show properties of the given type only</p>
+<p>Example of endpoint for property type: <code class="endpoint">
+  http://localhost:9090/api/properties?property_type=apartment</code></p>
+
+<pre>{
+  "properties": [
+      {
+          "property_id": 1,
+          "property_name": "Modern Apartment in City Center",
+          "location": "London, UK",
+          "cost_per_night": 120,
+          "price_per_night": 120,
+          "property_type": "Apartment",
+          "host": "Alice Johnson",
+          "popularity": 1
+      },
+    }
+</pre>
+
+</section>
+
+<section>
+<h2>GET /api/properties(sort cost per night or popularity and order ascending/descending)</h2>
+<ul>
+<li>?sort= to sort the properties by cost_per_night or popularity</li>
+<li>?order= to set the sorting order to ascending or descending</li>
+  </ul>
+<p>Endpoint <code class="endpoint">
+  http://localhost:9090/api/properties?sort=popularity&order=asc</code></p>
+
+  <pre>{
+    "properties": [
+        {
+            "property_id": 11,
+            "property_name": "Bright and Airy Studio",
+            "location": "Cambridge, UK",
+            "price_per_night": 100,
+            "property_type": "Studio",
+            "host": "Alice Johnson",
+            "popularity": 0
+        },
+  }
+
+  </pre>
+</section>  
+
+<section>
+
+<h2> GET /api/properties/:id</h2>
+<p>Returns detailed info about a property (name, location, price, description, host, avatar, favourite count)</p>
+<p>Endpoint <code class="endpoint">
+  http://localhost:9090/api/properties/3</code></p>
+
+<pre>{
+  "property": {
+      "property_id": 3,
+      "property_name": "Chic Studio Near the Beach",
+      "location": "Brighton, UK",
+      "price_per_night": 90,
+      "description": "Description of Chic Studio Near the Beach.",
+      "property_type": "Studio",
+      "host": "Alice Johnson",
+      "host_avatar": "https://example.com/images/alice.jpg",
+      "favourite_count": 1
+  }
+}</pre>
+<p>Optional: if you add ?user_id=, it will show if that user has favourited the property (true or false).</p>
+<p>Endpoint <code class="endpoint">
+  http://localhost:9090/api/properties/3?user_id=3</code></p>
+<pre>
+  "property": {
+      "property_id": 3,
+      "property_name": "Chic Studio Near the Beach",
+      "location": "Brighton, UK",
+      "price_per_night": 90,
+      "description": "Description of Chic Studio Near the Beach.",
+      "property_type": "Studio",
+      "host": "Alice Johnson",
+      "host_avatar": "https://example.com/images/alice.jpg",
+      "favourite_count": 1,
+      "favourited": false
+  }</pre>
+</section>
+
+
+<section>
+
+<h2>GET /api/properties/:id/reviews</h2>
+<ul>
+  <li>Show reviews from newest to oldest</li>
+<li>Each review has comment, rating, date, guest name, and guest picture</li>
+<li>Send the average rating of the property</li>
+</ul>
+<p>Endpoint <code class="endpoint">
+  http://localhost:9090/api/properties/3/reviews</code></p>
+
+
+<pre>{
+  "reviews": [
+      {
+          "review_id": 110,
+          "comment": "Amazing place!",
+          "rating": 5,
+          "created_at": "2025-08-12T12:19:49.597Z",
+          "guest": "Emma Davis",
+          "guest_avatar": "https://example.com/images/emma.jpg"
+      },
+      ...
+      ],
+      "average_rating": 4
+  }</pre>
+</section>
+
+<section>
+
+  <h2> POST /api/properties/:id/reviews</h2>
+ <p>Send guest ID, rating, and comment</p>
+ <p><code class="endpoint">
+  http://localhost:9090/api/properties/3/reviews</code> and on body put:</p>
+ <pre>{
+   "guest_id": 3,
+   "rating": 5,
+   "comment": "Amazing place!"
+ }</pre>
+ 
+ <ul>
+<li>Save the review for the property</li>
+<li>Send back the new review details and the date it was made</li>
+ <pre>{
+   "review_id": 110,
+   "property_id": 3,
+   "guest_id": 3,
+   "rating": 5,
+   "comment": "Amazing place!",
+   "created_at": "2025-08-12T12:19:49.597Z"
+ }</pre>
+ </section>
+ 
+
+<section>
+  <h2>GET /api/users/:id</h2>
+  <p>Respond with the user data for the given ID</p>
+  <p>Endpoint <code class="endpoint">
+    http://localhost:9090/api/users/1</code></p>
+  <pre>{
+    "user": {
+        "user_id": 1,
+        "first_name": "Alice",
+        "surname": "Johnson",
+        "email": "alice@example.com",
+        "phone_number": "+44 7000 111111",
+        "is_host": true,
+        "avatar": "https://example.com/images/alice.jpg",
+        "created_at": "2025-07-31T06:50:49.290Z"
+    }
+  }</pre>
+    
+  </section>
+  
+<section>
+
+<h2>DELETE /api/reviews/:id</h2>
+<ul>
+  <li>Delete a review by its ID</li>
+  <li>Remove it from the database</li>
+  <li>Send back an empty response</li>
+<p>Endpoint <code class="endpoint">
+  http://localhost:9090/api/reviews/5</code></p>
+
+<pre>{
+  "msg": "no body"
+}</pre>
+</section>
+</div>
+<footer>
+  <p>Created by Sandra B.</p>
+</footer>  
+</body>
+</html>

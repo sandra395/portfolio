@@ -1,0 +1,52 @@
+h1 {
+    color:blue;
+    font-family:Georgia, serif;
+    font-weight: bold;
+    text-align: center;
+    font-size: 50px;
+}
+
+.introduction {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+
+}
+
+h2{
+    font-family: "Times New Roman",serif ;
+    font-size: 26px;
+}
+
+.endpoints-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 20px; /* space between endpoints */
+  
+}
+
+.endpoints-grid section {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+}
+
+.endpoints-grid pre {
+   font-family:Arial, sans-serif;
+   color: rgb(54, 131, 198); 
+   font-weight: bold;
+   font-size: 16px;
+}
+
+.endpoints-grid p{
+    font-family:Arial, sans-serif;
+    font-size: 16px;
+ }
+ 
+ .endpoint {
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    padding: 5px 10px;        
+    border-radius: 5px;        
+    font-family: monospace;    
+    user-select: all;   /* When someone clicks the text, all of it gets selected for easy copying */
+  }
