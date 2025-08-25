@@ -54,7 +54,7 @@ app.delete("/api/reviews/:id", deleteReview);
 
 // Shows the homepage file when you go to the main web address
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 
