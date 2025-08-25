@@ -94,6 +94,13 @@ if (filters.length > 0) {
     return result.rows[0];
 };
   
+const checkIfPropertyIsFavourited = async (propertyId, userId) => {
+  const result = await db.query(
+    `SELECT 1 FROM favourites WHERE property_id = $1 AND user_id = $2`,
+    [propertyId, userId]
+  );
+  return result.rows.length > 0;
+};
    
   //Add a review to a property
 const addReviewToProperty = async (property_id, guest_id, rating, comment) => {
@@ -121,7 +128,7 @@ const addReviewToProperty = async (property_id, guest_id, rating, comment) => {
        ORDER BY r.created_at DESC`,
       [propertyId]
     );
-    return result.rows;
+    return result.rows || [];
   };
 
   
@@ -156,6 +163,7 @@ const fetchAverageRating = async (propertyId) => {
     fetchPropertyReviews,
     getUserById,
     deleteReview,
-    fetchAverageRating
+    fetchAverageRating,
+    checkIfPropertyIsFavourited
   };
   

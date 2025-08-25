@@ -6,10 +6,17 @@ const {propertyTypesData,
     favouritesData,
     usersData,
 bookingsData,
-amenitiesData} = require ("./data/test")
+amenitiesData} = require ("./data");
 
 
 
 
-seed(propertyTypesData, usersData,propertiesData,reviewsData, 
-    imagesData, favouritesData, bookingsData,amenitiesData)
+seed (propertyTypesData,
+usersData,
+propertiesData,
+reviewsData,
+imagesData,
+favouritesData,
+bookingsData,
+amenitiesData
+);

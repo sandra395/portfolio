@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "test-utils": "jest utils",
     "test": "jest app.test.js",
-    "seed": "node ./db/seed-run.js",
-    "setup-db": "psql -f ./db/seed.sql"
+    "setup-dbs": "psql -f ./db/seed.sql",
+    "seed-dev": "node ./db/seed-run.js",
+    "seed-test": "NODE_ENV=test node ./db/seed-run.js",
+    "seed-prod": "NODE_ENV=production node ./db/seed-run.js",
+    "dev": "nodemon server.js"
+    
   },
   "keywords": [],
   "author": "",

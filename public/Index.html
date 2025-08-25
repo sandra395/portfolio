@@ -20,11 +20,23 @@
 <section>
   <h2>GET /api/properties</h2>
 <p>Send back a response with a list called properties,
-     where each item has the correct details about a property.
-      <p>Endpoint: <code class="endpoint">
-        http://localhost:9090/api/properties</code></p>
+     where each item has the correct details about a property. This endpoint also takes optional query parameters to filter and sort results:</p>
 
-     <pre>{
+     <ul>
+      <li>minprice - Return properties with cost per night ≥ this value</li>
+      <li>maxprice - Return properties with cost per night ≤ this value</li>
+      <li>property_type - Return properties of a specific type (e.g., Apartment, House, Studio)</li>
+      <li>sort - Sort results by cost_per_night or popularity</li>
+      <li>order - Sort order: asc (default) or desc </li>
+    </ul> 
+
+    <h3>Examples of requests</h3>
+    <pre class="api">
+      GET /api/properties?minprice=100&maxprice=200
+      GET /api/properties?property_type=Apartment&sort=cost_per_night&order=asc
+        </pre>
+<h3>Example of response</h3>      
+     <pre class="response">{
       "properties": [
         {
           "property_id": 2,
@@ -41,85 +53,12 @@
 </section>
 
 <section>
-    <h2>GET /api/properties (maxprice cost per night and minprice cost per night)</h2>
-    <ul>
-      <li>maxprice= shows properties cheaper than this price.</li>
-      <li>?minprice= shows properties more expensive than this price.</li>
-    </ul>
-<p>Example min price endpoint: <code class="endpoint">
-  http://localhost:9090/api/properties?minprice=100</code></p>
-<pre>{
-  "properties": [
-      {
-          "property_id": 2,
-          "property_name": "Cosy Family House",
-          "location": "Manchester, UK",
-          "cost_per_night": 150,
-          "price_per_night": 150,
-          "property_type": "House",
-          "host": "Alice Johnson",
-          "popularity": 4
-      },
-    }
-</pre>
-</section>
-
-<section>
-    <h2>GET /api/properties (property type)</h2>
-<p>?property_type= to show properties of the given type only</p>
-<p>Example of endpoint for property type: <code class="endpoint">
-  http://localhost:9090/api/properties?property_type=apartment</code></p>
-
-<pre>{
-  "properties": [
-      {
-          "property_id": 1,
-          "property_name": "Modern Apartment in City Center",
-          "location": "London, UK",
-          "cost_per_night": 120,
-          "price_per_night": 120,
-          "property_type": "Apartment",
-          "host": "Alice Johnson",
-          "popularity": 1
-      },
-    }
-</pre>
-
-</section>
-
-<section>
-<h2>GET /api/properties(sort cost per night or popularity and order ascending/descending)</h2>
-<ul>
-<li>?sort= to sort the properties by cost_per_night or popularity</li>
-<li>?order= to set the sorting order to ascending or descending</li>
-  </ul>
-<p>Endpoint <code class="endpoint">
-  http://localhost:9090/api/properties?sort=popularity&order=asc</code></p>
-
-  <pre>{
-    "properties": [
-        {
-            "property_id": 11,
-            "property_name": "Bright and Airy Studio",
-            "location": "Cambridge, UK",
-            "price_per_night": 100,
-            "property_type": "Studio",
-            "host": "Alice Johnson",
-            "popularity": 0
-        },
-  }
-
-  </pre>
-</section>  
-
-<section>
 
 <h2> GET /api/properties/:id</h2>
 <p>Returns detailed info about a property (name, location, price, description, host, avatar, favourite count)</p>
-<p>Endpoint <code class="endpoint">
-  http://localhost:9090/api/properties/3</code></p>
 
-<pre>{
+<h3>Example of response</h3> 
+<pre class="response">{
   "property": {
       "property_id": 3,
       "property_name": "Chic Studio Near the Beach",
@@ -132,10 +71,10 @@
       "favourite_count": 1
   }
 }</pre>
-<p>Optional: if you add ?user_id=, it will show if that user has favourited the property (true or false).</p>
-<p>Endpoint <code class="endpoint">
-  http://localhost:9090/api/properties/3?user_id=3</code></p>
-<pre>
+<p><strong>Optional:</strong> if you add ?user_id=, it will show if that user has favourited the property (true or false).</p>
+
+<h3>Example of response</h3> 
+<pre class="response">
   "property": {
       "property_id": 3,
       "property_name": "Chic Studio Near the Beach",
@@ -159,11 +98,10 @@
 <li>Each review has comment, rating, date, guest name, and guest picture</li>
 <li>Send the average rating of the property</li>
 </ul>
-<p>Endpoint <code class="endpoint">
-  http://localhost:9090/api/properties/3/reviews</code></p>
 
 
-<pre>{
+<h3>Example of response</h3> 
+<pre class="response">{
   "reviews": [
       {
           "review_id": 110,
@@ -183,18 +121,21 @@
 
   <h2> POST /api/properties/:id/reviews</h2>
  <p>Send guest ID, rating, and comment</p>
- <p><code class="endpoint">
-  http://localhost:9090/api/properties/3/reviews</code> and on body put:</p>
- <pre>{
+
+ <h3>Example of response</h3> 
+ <pre class="response">{
    "guest_id": 3,
    "rating": 5,
    "comment": "Amazing place!"
  }</pre>
  
- <ul>
+<ul>
 <li>Save the review for the property</li>
 <li>Send back the new review details and the date it was made</li>
- <pre>{
+</ul>
+
+<h3>Example of response</h3> 
+ <pre class="response">{
    "review_id": 110,
    "property_id": 3,
    "guest_id": 3,
@@ -208,9 +149,9 @@
 <section>
   <h2>GET /api/users/:id</h2>
   <p>Respond with the user data for the given ID</p>
-  <p>Endpoint <code class="endpoint">
-    http://localhost:9090/api/users/1</code></p>
-  <pre>{
+
+<h3>Example of response</h3> 
+  <pre class="response">{
     "user": {
         "user_id": 1,
         "first_name": "Alice",
@@ -232,11 +173,10 @@
   <li>Delete a review by its ID</li>
   <li>Remove it from the database</li>
   <li>Send back an empty response</li>
-<p>Endpoint <code class="endpoint">
-  http://localhost:9090/api/reviews/5</code></p>
 
-<pre>{
-  "msg": "no body"
+  <h3>Example of response</h3> 
+<pre class="response">{
+  "msg": "no review found"
 }</pre>
 </section>
 </div>

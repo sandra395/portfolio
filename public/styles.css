@@ -17,6 +17,27 @@ h2{
     font-size: 26px;
 }
 
+h3{
+    font-family:Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+}
+
+ul {
+    font-family:Arial, sans-serif;
+    font-size: 16px;
+}
+
+.api{
+    color: rgb(98, 62, 229);
+    font-family:Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+
+    
+   
+}
 .endpoints-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
@@ -30,7 +51,7 @@ h2{
     border-radius: 8px;
 }
 
-.endpoints-grid pre {
+.response {
    font-family:Arial, sans-serif;
    color: rgb(54, 131, 198); 
    font-weight: bold;
@@ -41,12 +62,3 @@ h2{
     font-family:Arial, sans-serif;
     font-size: 16px;
  }
- 
- .endpoint {
-    font-family: "Courier New", monospace;
-    font-size: 15px;
-    padding: 5px 10px;        
-    border-radius: 5px;        
-    font-family: monospace;    
-    user-select: all;   /* When someone clicks the text, all of it gets selected for easy copying */
-  }

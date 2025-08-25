@@ -2,7 +2,7 @@ const db = require("./connection");
 const format = require("pg-format");
 
 async function seed(propertyTypesData,usersData, propertiesData, reviewsData, 
-  imagesData, favouritesData, bookingsData, amenitiesData) {
+  imagesData, favouritesData, bookingsData) {
     await db.query(`DROP TABLE IF EXISTS properties_amenities`);
 await db.query(`DROP TABLE IF EXISTS reviews`);
 await db.query(`DROP TABLE IF EXISTS images`);
@@ -47,6 +47,9 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
       FOREIGN KEY (host_id) REFERENCES users(user_id)
     )
   `);
+
+
+
 
   await db.query(`
     CREATE TABLE reviews (
@@ -118,7 +121,6 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   const { rows: propertyTypeRows } = await db.query(insertPropertyTypesQuery);
   //console.log("Inserted property types:", propertyTypeRows);
 
-
   // Maps over usersData to create an array of user details, 
 // ensuring created_at has a value by defaulting to the current date if missing.
   const formattedUsersData = usersData.map(
@@ -178,6 +180,46 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
   );
   const { rows: propertiesRows } = await db.query(insertPropertiesQuery);
   //console.log("Inserted properties:", propertiesRows);
+
+  // This is new code you need to add after your `properties` table insert query
+// const { rows: propertiesRows } = await db.query(insertPropertiesQuery);
+
+// Extract all unique amenities from the properties data
+const uniqueAmenities = new Set();
+propertiesData.forEach(property => {
+    if (property.amenities) {
+        property.amenities.forEach(amenity => {
+            uniqueAmenities.add(amenity);
+        });
+    }
+});
+
+// Format and insert the unique amenities
+const formattedAmenitiesData = [...uniqueAmenities].map(amenity_slug => [amenity_slug]);
+const insertAmenitiesQuery = format(
+    `INSERT INTO amenities (amenity_slug) VALUES %L RETURNING *`,
+    formattedAmenitiesData
+);
+await db.query(insertAmenitiesQuery);
+
+// Create and insert properties_amenities data
+const formattedPropertiesAmenitiesData = [];
+propertiesRows.forEach(property => {
+    const originalProperty = propertiesData.find(p => p.name === property.name);
+    if (originalProperty && originalProperty.amenities) {
+        originalProperty.amenities.forEach(amenity => {
+            formattedPropertiesAmenitiesData.push([property.property_id, amenity]);
+        });
+    }
+});
+
+if (formattedPropertiesAmenitiesData.length > 0) {
+    const insertPropertiesAmenitiesQuery = format(
+        `INSERT INTO properties_amenities (property_id, amenity_slug) VALUES %L RETURNING *`,
+        formattedPropertiesAmenitiesData
+    );
+    await db.query(insertPropertiesAmenitiesQuery);
+}
 
 // Make a list to find a property’s ID by its name
   const propertiesRef = {};
@@ -317,26 +359,7 @@ await db.query(`DROP TABLE IF EXISTS property_types`);
     //console.log("No bookings data to insert");
   }
 
-  // Get just the amenity_slug from each item and put it in an array
-  const formattedAmenitiesData = amenitiesData.map(({ amenity_slug }) => [amenity_slug]);
 
-  const insertAmenitiesQuery = format(
-    `INSERT INTO amenities (amenity_slug) VALUES %L RETURNING *`,
-    formattedAmenitiesData
-  );
-  
-  const { rows: amenityRows } = await db.query(insertAmenitiesQuery);
- // console.log("Inserted amenities:", amenityRows);
-  
-
-  const insertPropertiesAmenitiesQuery = format(
-    `INSERT INTO properties_amenities (property_id, amenity_slug) VALUES %L RETURNING *`,
-    formattedPropertiesAmenitiesData
-  );
-  
-  const { rows: propAmenityRows } = await db.query(insertPropertiesAmenitiesQuery);
-  //console.log("Inserted properties_amenities:", propAmenityRows);
-  
 
 
   

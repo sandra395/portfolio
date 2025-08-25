@@ -4,6 +4,10 @@ const { fetchUserById } = require("../models/users.models");
 exports.getUserById = async (req, res, next) => {
   const userId = req.params.id;
 
+    // Validate that userId is a number
+    if (isNaN(userId)) {
+      return res.status(400).json({ msg: "Invalid user ID" });
+    }
 
   try {
     // Get user data from the database

@@ -1,4 +1,4 @@
-const { fetchAllProperties, fetchPropertyById,deleteReview,fetchPropertyReviews, fetchAverageRating } = require("../models/properties.models");
+const { fetchAllProperties, fetchPropertyById,deleteReview,fetchPropertyReviews, fetchAverageRating} = require("../models/properties.models");
 const {fetchUserById} = require("../models/users.models")
 const { checkExists,checkIfPropertyIsFavourited } = require("../utils");
 const db = require("../db/connection");
@@ -91,24 +91,38 @@ exports.getPropertyById = async (req, res, next) => {
     const { id } = req.params;
     const { user_id } = req.query;
 
+    // Validate that id is a number
+    if (isNaN(Number(id))) {
+      return res.status(400).json({ msg: "Invalid property ID" });
+    }
+
     const property = await fetchPropertyById(id);
+
 
     //if property doesn't exist,return 404
     if (!property) {
       return res.status(404).json({ msg: "Property not found" });
     }
 
-   // If we have a user_id, check if this user has favourited the property
+    // Optional user_id
     if (user_id) {
+      if (isNaN(Number(user_id))) {
+        return res.status(400).json({ msg: "Invalid user ID" });
+      }
+
+      const user = await fetchUserById(user_id);
+      if (!user) {
+        return res.status(404).json({ msg: "User not found" });
+      }
+
       property.favourited = await checkIfPropertyIsFavourited(property.property_id, user_id);
     }
-
     res.status(200).json({ property });
+
   } catch (error) {
     if (error.status === 404) {
       return res.status(404).json({ msg: error.msg || "Property not found" });
     }
-    console.error("Error in getPropertyById:", error);
     next(error);
   }
 };
@@ -168,8 +182,10 @@ exports.getPropertyReviews = async (req, res, next) => {
   if (isNaN(propertyId)) {
     return res.status(400).json({ msg: "Invalid property ID" });
   }
+try{
+  await fetchPropertyById(propertyId);
 
-  try {
+    
     const reviews = await fetchPropertyReviews(propertyId);
     let average_rating = await fetchAverageRating(propertyId);
 
@@ -177,26 +193,17 @@ exports.getPropertyReviews = async (req, res, next) => {
 // Convert to number and default to 0 if null
 average_rating = parseFloat(average_rating) || 0;
 
-    res.status(200).json({ reviews, average_rating });
-  } catch (err) {
-    console.error("Error in getPropertyReviews:", err);
-    next(err);
+res.status(200).json({ reviews, average_rating });
+} catch (err) {
+  // Handle 404 errors from fetchPropertyById
+  if (err.status === 404) {
+    return res.status(404).json({ msg: err.msg || "Property not found" });
   }
+  console.error("Error in getPropertyReviews:", err);
+  next(err);
+}
 };
 
-
-      //const reviews = await fetchPropertyReviews(propertyId);
-
-      // Calculate average rating
-        //const average_rating = reviews.length
-          //? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
-         // : 0;
-    
-        //res.status(200).json({ reviews});
-      //} catch (err) {
-       // next(err);
-      //}
-    //};
 
     //DELETE /api/reviews/:id
     //Delete a review by its ID
@@ -213,7 +220,7 @@ average_rating = parseFloat(average_rating) || 0;
     
         // If no review was deleted, send 404
       if (!result) {
-  return res.status(404).json({ msg: "no body" });
+  return res.status(404).json({ msg: "Review not found" });
 }
     
       // Deleted successfully, nothing to send back
