@@ -4,6 +4,9 @@ const express = require("express");
 const path = require("path");
 // Load settings from the .env file
 require("dotenv").config();
+// Serve all static files from the 'public' folder
+app.use(express.static(path.join(__dirname, "public")));
+
 // Use property-related functions
 const { getAllProperties, getPropertyByType, postPropertyReview, getPropertyById,getPropertyReviews, deleteReview } 
   = require("./controllers/properties.controllers");
