@@ -4,6 +4,10 @@ const express = require("express");
 const path = require("path");
 // Load settings from the .env file
 require("dotenv").config();
+// Start an Express app to run the server
+const app = express();
+// Making sure we can use data sent as JSON
+app.use(express.json());
 // Serve all static files from the 'public' folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -14,10 +18,8 @@ const { getAllProperties, getPropertyByType, postPropertyReview, getPropertyById
 const { notFoundHandler, errorHandler } = require("./controllers/errors.handlers");
 // Import the getUserById controller function from the users controller file
 const { getUserById } = require("./controllers/users.controller");
-// Start an Express app to run the server
-const app = express();
-// Making sure we can use data sent as JSON
-app.use(express.json());
+
+
 
 
 // endpoints
