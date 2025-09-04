@@ -12,12 +12,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Use property-related functions
-const { getAllProperties, getPropertyByType, postPropertyReview, getPropertyById,getPropertyReviews, deleteReview } 
+const { getAllProperties, getPropertyByType, postPropertyReview, getPropertyById,getPropertyReviews, deleteReview, addPropertyToFavourites, updateUser } 
   = require("./controllers/properties.controllers");
   // Get the functions that handle errors
 const { notFoundHandler, errorHandler } = require("./controllers/errors.handlers");
 // Import the getUserById controller function from the users controller file
 const { getUserById } = require("./controllers/users.controller");
+const { getBookingsByProperty, addBooking,getBookingsByUser } = require("./controllers/booking.controller");
+
 
 
 
@@ -52,11 +54,24 @@ app.post("/api/properties/:id/reviews", postPropertyReview);
 // Deletes a review by its ID
 app.delete("/api/reviews/:id", deleteReview);
 
+
+app.post("/api/properties/:id/favourite", addPropertyToFavourites);
+
+app.patch("/api/users/:id", updateUser); 
+
+// GET all bookings for a property
+app.get('/api/properties/:id/bookings', getBookingsByProperty);
+
+// POST a new booking for a property
+app.post('/api/properties/:id/booking', addBooking);
+//user bookings
+app.get('/api/users/:id/bookings', getBookingsByUser);
+
+
 // Shows the homepage file when you go to the main web address
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-
 
 // Sends a “page not found” message if the URL is wrong(shows 404 error)
 app.use(notFoundHandler);
