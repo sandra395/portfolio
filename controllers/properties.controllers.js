@@ -5,7 +5,7 @@ const db = require("../db/connection");
 
 // Get all properties with optional filters like price, type, sorting,ordering
 exports.getAllProperties = async (req, res, next) => {
-  const { minprice, maxprice, property_type, sort, order } = req.query;
+  const { minprice, maxprice, property_type, sort, order,host } = req.query;
 
   // Sort and order options for database queries
   const sortingOptions = {
@@ -41,6 +41,9 @@ exports.getAllProperties = async (req, res, next) => {
   if ((minprice && isNaN(minprice)) || (maxprice && isNaN(maxprice))) {
     return res.status(400).send({ msg: "Please use numbers for minprice and maxprice" });
   }
+  if (host && isNaN(host)) {
+    return res.status(400).json({ msg: "Invalid host ID" });
+  }
 
   try {
     // Check property_type exists in database
@@ -55,7 +58,7 @@ exports.getAllProperties = async (req, res, next) => {
     }
 
     // Fetch properties from the database
-    const properties = await fetchAllProperties(minprice, maxprice, property_type, sortColumn, sortOrder);
+    const properties = await fetchAllProperties(minprice, maxprice, property_type, sortColumn, sortOrder, host);
 
     res.status(200).json({ properties });
   } catch (err) {
@@ -229,3 +232,79 @@ res.status(200).json({ reviews, average_rating });
         next(err);
       }
     };
+
+   // POST /api/properties/:id/favourite
+exports.addPropertyToFavourites = async (req, res, next) => {
+  try {
+    const propertyId = req.params.id;
+    const { guest_id } = req.body;
+
+    // Check that the property exists
+    await checkExists("properties", "property_id", propertyId, "Property");
+    // Check if property is already favourited
+    const alreadyFavourited = await checkIfPropertyIsFavourited(propertyId, guest_id);
+    if (alreadyFavourited) {
+      return res.status(400).json({ msg: "Property already favourited." });
+    }
+
+    // Insert into favourites table
+    const result = await db.query(
+      `INSERT INTO favourites (property_id, guest_id)
+       VALUES ($1, $2) RETURNING favourite_id`,
+      [propertyId, guest_id]
+    );
+
+    const favourite_id = result.rows[0].favourite_id;
+
+    // Respond with success
+    res.status(201).json({
+      msg: "Property favourited successfully.",
+      favourite_id,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { first_name, surname, email, phone, avatar } = req.body;
+
+    // Build dynamic query parts
+    const fieldsToUpdate = { first_name, surname, email, phone, avatar };
+    const fields = [];
+    const values = [];
+
+    Object.entries(fieldsToUpdate).forEach(([key, value]) => {
+      if (value !== undefined) { // only include fields that are provided
+        values.push(value);
+        fields.push(`${key}=$${values.length}`);
+      }
+    });
+
+    // If no fields to update, return error
+    if (fields.length === 0) {
+      return res.status(400).json({ msg: "No fields to update" });
+    }
+
+    // Add user id as the last parameter
+    values.push(id);
+
+    // Run the update query
+    const result = await db.query(
+      `UPDATE users SET ${fields.join(", ")} WHERE user_id=$${values.length} RETURNING *`,
+      values
+    );
+
+    // If no user found
+    if (result.rows.length === 0) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Return updated user
+    res.status(200).json(result.rows[0]);
+  } catch (err) {
+    next(err);
+  }
+};

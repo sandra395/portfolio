@@ -2,13 +2,14 @@ const { getUserById } = require("../models/users.models");
 const db = require("../db/connection");
 
 // Get properties from the database with filters and sorting if given
-const fetchAllProperties = async (minprice, maxprice, property_type, sortColumn = "popularity", sortOrder = "DESC") => {
+const fetchAllProperties = async (minprice, maxprice, property_type, sortColumn = "popularity", sortOrder = "DESC", host) => {
   const queryValues = []; // store values to use in the query
   const filters = []; // Keep a list of filters to find certain properties
 
     // Convert query params to numbers if they exist
     minprice = minprice ? Number(minprice) : undefined;
     maxprice = maxprice ? Number(maxprice) : undefined;
+    host = host ? Number(host) : undefined;
 
 // start SQL query to get properties with host name and how popular they are
 let queryString = `
@@ -19,12 +20,18 @@ SELECT
   p.price_per_night::INT AS price_per_night, 
   p.property_type,
   u.first_name || ' ' || u.surname AS host,
-  COUNT(f.favourite_id)::INT AS popularity 
+  COUNT(f.favourite_id)::INT AS popularity,
+  (
+    SELECT i.image_url
+    FROM images i
+    WHERE i.property_id = p.property_id
+    ORDER BY i.image_id ASC
+    LIMIT 1
+  ) AS image
 FROM properties p
 JOIN users u ON p.host_id = u.user_id
 LEFT JOIN favourites f ON p.property_id = f.property_id
 `;
-
   // If minprice is given, add it as a filter
   if (minprice !== undefined) {
     queryValues.push(minprice);
@@ -42,6 +49,11 @@ LEFT JOIN favourites f ON p.property_id = f.property_id
   if (property_type) {
     queryValues.push(property_type);
     filters.push(`p.property_type = $${queryValues.length}`);
+  }
+
+  if (host !== undefined) {
+    queryValues.push(host);
+    filters.push(`p.host_id = $${queryValues.length}`);
   }
   
 // Add all filters in one WHERE clause
@@ -64,36 +76,52 @@ if (filters.length > 0) {
 };
 
 // Get full details of a property using its ID
-  const fetchPropertyById = async (propertyId) => {
-    const queryStr = `
-      SELECT 
-        p.property_id,
-        p.name AS property_name,
-        p.location,
-        p.price_per_night::INT AS price_per_night,
-        p.description,
-        p.property_type,
-        u.first_name || ' ' || u.surname AS host,
-        u.avatar AS host_avatar,
-        COUNT(f.favourite_id)::INT AS favourite_count
-      FROM properties p
-      JOIN users u ON p.host_id = u.user_id
-      LEFT JOIN favourites f ON p.property_id = f.property_id
-      WHERE p.property_id = $1
-      GROUP BY p.property_id, u.first_name, u.surname, u.avatar, p.name, p.location, p.price_per_night, p.description, p.property_type
-    `;
-      // Run the query to find the property
-    const result = await db.query(queryStr, [propertyId]);
+const fetchPropertyById = async (propertyId) => {
+  const queryStr = `
+    SELECT 
+      p.property_id,
+      p.name AS property_name,
+      p.location,
+      p.price_per_night::INT AS price_per_night,
+      p.description,
+      p.property_type,
+      u.first_name || ' ' || u.surname AS host,
+      u.avatar AS host_avatar,
+      COUNT(f.favourite_id)::INT AS favourite_count
+    FROM properties p
+    JOIN users u ON p.host_id = u.user_id
+    LEFT JOIN favourites f ON p.property_id = f.property_id
+    WHERE p.property_id = $1
+    GROUP BY 
+      p.property_id, p.name, p.location, p.price_per_night, p.description, p.property_type,
+      u.first_name, u.surname, u.avatar
+  `;
+
+  const result = await db.query(queryStr, [propertyId]);
+
+  if (result.rows.length === 0) {
+    throw { status: 404, msg: "Property not found" };
+  }
+
   
-      // If no property found, send 404 error
-    if (result.rows.length === 0) {
-      throw { status: 404, msg: "Property not found" };
-    }
-    
-    // Return the property info
-    return result.rows[0];
+  const property = result.rows[0];
+
+  
+  const imagesQuery = `
+    SELECT image_url
+    FROM images
+    WHERE property_id = $1
+    ORDER BY image_id ASC
+  `;
+  const imagesResult = await db.query(imagesQuery, [propertyId]);
+
+
+  property.images = imagesResult.rows.map(row => row.image_url);
+
+  return property;
 };
-  
+
+
 const checkIfPropertyIsFavourited = async (propertyId, userId) => {
   const result = await db.query(
     `SELECT 1 FROM favourites WHERE property_id = $1 AND user_id = $2`,
@@ -152,8 +180,19 @@ const fetchAverageRating = async (propertyId) => {
     [propertyId]
   );
 
-  // If no reviews, average_rating will be null → default to 0
+
   return result.rows[0].average_rating || 0;
+};
+
+const addPropertyToFavourites = async (propertyId, guestId) => {
+  const result = await db.query(
+    `INSERT INTO favourites (property_id, user_id)
+     VALUES ($1, $2)
+     RETURNING favourite_id`,
+    [propertyId, guestId]
+  );
+
+  return result.rows[0]; 
 };
 
   module.exports = {
@@ -164,6 +203,7 @@ const fetchAverageRating = async (propertyId) => {
     getUserById,
     deleteReview,
     fetchAverageRating,
-    checkIfPropertyIsFavourited
+    checkIfPropertyIsFavourited,
+    addPropertyToFavourites
   };
   
