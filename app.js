@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 // Serve all static files from the 'public' folder
 app.use(express.static(path.join(__dirname, "public")));
+const cors = require('cors');
 
 // Use property-related functions
 const { getAllProperties, getPropertyByType, postPropertyReview, getPropertyById,getPropertyReviews, deleteReview, addPropertyToFavourites, updateUser } 

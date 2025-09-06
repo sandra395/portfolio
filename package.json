@@ -11,13 +11,13 @@
     "seed-prod": "NODE_ENV=production node ./db/seed-run.js",
     "dev": "nodemon server.js",
     "start": "node server.js"
-    
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "pg": "^8.16.3",
