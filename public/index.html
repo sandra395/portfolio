@@ -28,32 +28,65 @@
       <li>property_type - Return properties of a specific type (e.g., Apartment, House, Studio)</li>
       <li>sort - Sort results by cost_per_night or popularity</li>
       <li>order - Sort order: asc (default) or desc </li>
+      <li>Retrieve a list of all properties. Each property object now includes a field for the first image associated with that property</li>
+    <li>Responds with a list of properties that belong to the specified host ID</li>
     </ul> 
 
     <h3>Examples of requests</h3>
     <pre class="api">
       GET /api/properties?minprice=100&maxprice=200
       GET /api/properties?property_type=Apartment&sort=cost_per_night&order=asc
+      GET /api/properties?host=id
+      
         </pre>
 <h3>Example of response</h3>      
      <pre class="response">{
       "properties": [
-        {
-          "property_id": 2,
-          "property_name": "Cosy Family House",
-          "location": "Manchester, UK",
-          "cost_per_night": 150,
-          "price_per_night": 150,
-          "property_type": "House",
-          "host": "Alice Johnson",
-          "popularity": 4
-        }
-      ]
-    }</pre>
+          {
+              "property_id": 10,
+              "property_name": "Quaint Cottage in the Hills",
+              "location": "Lake District, UK",
+              "price_per_night": 180,
+              "property_type": "Cottage",
+              "host": "Alice Perez",
+              "popularity": 6,
+              "image": "https://images.unsplash.com/photo-1720877851762-1fd589e96311?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          },
+          {
+              "property_id": 9,
+              "property_name": "Cosy Loft in the Heart of the City",
+              "location": "Manchester, UK",
+              "price_per_night": 130,
+              "property_type": "Apartment",
+              "host": "Alice Perez",
+              "popularity": 2,
+              "image": "https://images.unsplash.com/photo-1650772263831-41aa1b2c80d0?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          },
+          {
+              "property_id": 7,
+              "property_name": "Spacious Countryside House",
+              "location": "Yorkshire, UK",
+              "price_per_night": 200,
+              "property_type": "House",
+              "host": "Alice Perez",
+              "popularity": 0,
+              "image": "https://images.unsplash.com/photo-1727706572437-4fcda0cbd66f?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          },
+          {
+              "property_id": 19,
+              "property_name": "Historic Castle Stay",
+              "location": "Scotland, UK",
+              "price_per_night": 500,
+              "property_type": "Castle",
+              "host": "Alice Perez",
+              "popularity": 0,
+              "image": "https://images.unsplash.com/photo-1502672023488-70e25813eb80?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
+          ]
+  }</pre>  
 </section>
 
 <section>
-
 <h2> GET /api/properties/:id</h2>
 <p>Returns detailed info about a property (name, location, price, description, host, avatar, favourite count)</p>
 
@@ -87,11 +120,30 @@
       "favourite_count": 1,
       "favourited": false
   }</pre>
+
+  <p>Retrieve a single property by its id along with all the images associated with it</p>
+  <h3>Example of response</h3> 
+<pre class="response">
+  {
+    "property": {
+        "property_id": 5,
+        "property_name": "Charming Studio Retreat",
+        "location": "Bristol, UK",
+        "price_per_night": 85,
+        "description": "A peaceful studio perfect for solo travelers or couples.",
+        "property_type": "Studio",
+        "host": "Emma Davis",
+        "host_avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "favourite_count": 1,
+        "images": [
+            "https://images.unsplash.com/photo-1542853647-47ad77242390?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "https://images.unsplash.com/photo-1471086569966-db3eebc25a59?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        ]
+    }
+}</pre>
 </section>
 
-
 <section>
-
 <h2>GET /api/properties/:id/reviews</h2>
 <ul>
   <li>Show reviews from newest to oldest</li>
@@ -111,7 +163,6 @@
           "guest": "Emma Davis",
           "guest_avatar": "https://example.com/images/emma.jpg"
       },
-      ...
       ],
       "average_rating": 4
   }</pre>
@@ -122,7 +173,7 @@
   <h2> POST /api/properties/:id/reviews</h2>
  <p>Send guest ID, rating, and comment</p>
 
- <h3>Example of response</h3> 
+ <h3>Request body</h3> 
  <pre class="response">{
    "guest_id": 3,
    "rating": 5,
@@ -163,11 +214,49 @@
         "created_at": "2025-07-31T06:50:49.290Z"
     }
   }</pre>
-    
+
+  <h2>PATCH /api/users/:id</h2>
+  <p>Responds with the updated user data after updating the provided fields</p>
+
+<h3>Request body</h3> 
+  <pre class="response">{
+      "first_name": "Bob",
+      "surname": "Arnold",
+      "email":"bob@example.com",
+      "phone_number": "+44 7000 222222",
+      "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  }</pre>
+
+  <h3>Example of response</h3> 
+  <pre class="response">{
+    "user_id": 3,
+    "first_name": "Bob",
+    "surname": "Arnold",
+    "email": "bob@example.com",
+    "phone_number": "+44 7000 333333",
+    "is_host": true,
+    "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "created_at": "2025-09-03T18:51:35.573Z"
+}</pre>
+
+<h2> POST /api/properties/:id/booking</h2>
+ <p>Responds with the new booking ID and a success message after creating a booking for the property, if the dates don’t clash</p>
+
+ <h3>Request body</h3> 
+ <pre class="response">{
+  "guest_id": 5,
+  "check_in_date": "2026-03-02",
+  "check_out_date": "2026-03-10"
+}</pre>
+ 
+<h3>Example of response</h3> 
+ <pre class="response">{
+  "msg": "Booking successful",
+  "booking_id": 28
+}</pre>
   </section>
   
 <section>
-
 <h2>DELETE /api/reviews/:id</h2>
 <ul>
   <li>Delete a review by its ID</li>
@@ -179,6 +268,77 @@
   "msg": "no review found"
 }</pre>
 </section>
+
+<section>
+  <h2>POST /api/properties/:id/favourite</h2>
+  <p>Responds with the favourite ID after adding the property to the guest’s favourites</p>
+
+<h3>Request body</h3> 
+<pre class="response">{
+  "guest_id": 5
+}</pre>
+
+<h3>Example of response</h3> 
+<pre class="response">{
+  "msg": "Property favourited successfully.",
+  "favourite_id": 39
+}</pre>
+  </section>
+  
+  <section>
+    <h2>GET /api/properties/:id/bookings</h2>
+    <p>Responds with all bookings for the given property ID, ordered from latest to earliest check_out_date</p>
+  
+    <h3>Example of response</h3> 
+    <pre class="response">{
+      "property_id": 2,
+      "bookings": [
+          {
+              "booking_id": 23,
+              "check_in_date": "2025-12-01T00:00:00.000Z",
+              "check_out_date": "2025-12-05T00:00:00.000Z",
+              "created_at": "2025-09-03T18:51:35.583Z"
+          },
+          {
+              "booking_id": 2,
+              "check_in_date": "2025-03-01T00:00:00.000Z",
+              "check_out_date": "2025-03-05T00:00:00.000Z",
+              "created_at": "2025-09-03T18:51:35.583Z"
+          }
+      ]
+    }</pre>
+  </section>
+  
+  <section>
+    <h2>GET /api/users/:id/bookings</h2>
+    <p>Responds with a list of all bookings for the given user ID, including property and host details, ordered chronologically by check_in_date</p>
+  
+    <h3>Example of response</h3> 
+    <pre class="response">{
+      "bookings": [
+          {
+              "booking_id": 2,
+              "check_in_date": "2025-03-01T00:00:00.000Z",
+              "check_out_date": "2025-03-05T00:00:00.000Z",
+              "property_id": 2,
+              "property_name": "Cosy Family House",
+              "host": "Alice Johnson",
+              "image": "https://images.unsplash.com/photo-1613545325268-9265e1609167?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          },
+          {
+              "booking_id": 15,
+              "check_in_date": "2025-03-31T23:00:00.000Z",
+              "check_out_date": "2025-04-09T23:00:00.000Z",
+              "property_id": 15,
+              "property_name": "Seafront Villa with Infinity Pool",
+              "host": "Lucas Walker",
+              "image": "https://images.unsplash.com/photo-1650772263831-41aa1b2c80d0?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
+      ]
+    }</pre>
+  </section>
+  
+    
 </div>
 <footer>
   <p>Created by Sandra B.</p>
