@@ -40,15 +40,15 @@ ul {
 }
 .endpoints-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
     gap: 20px; /* space between endpoints */
   
 }
 
 .endpoints-grid section {
     background-color: #fff;
-    padding: 15px 20px;
+    padding: 10px 10px;
     border-radius: 8px;
+    margin-bottom: 1rem;
 }
 
 .response {

@@ -41,14 +41,20 @@ exports.createBooking = async ({ property_id, guest_id, check_in_date, check_out
 
 exports.fetchBookingsByUser = async (user_id) => {
   const query = `
-    SELECT b.booking_id, b.check_in_date, b.check_out_date,
+      SELECT b.booking_id, b.check_in_date, b.check_out_date,
            p.property_id, p.name AS property_name,
            u.first_name || ' ' || u.surname AS host_name,
            i.image_url AS property_image
     FROM bookings b
     JOIN properties p ON b.property_id = p.property_id
     JOIN users u ON p.host_id = u.user_id
-    LEFT JOIN images i ON i.property_id = p.property_id
+    LEFT JOIN LATERAL (
+        SELECT image_url
+        FROM images
+        WHERE property_id = p.property_id
+        ORDER BY image_id ASC
+        LIMIT 1
+    ) i ON true
     WHERE b.guest_id = $1
     ORDER BY b.check_in_date ASC
   `;
