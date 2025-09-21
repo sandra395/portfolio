@@ -145,6 +145,7 @@ const addReviewToProperty = async (property_id, guest_id, rating, comment) => {
     const result = await db.query(
       `SELECT 
          r.review_id, 
+         r.guest_id,
          r.rating, 
          r.comment, 
          r.created_at, 

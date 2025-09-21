@@ -4,13 +4,20 @@ const express = require("express");
 const path = require("path");
 // Load settings from the .env file
 require("dotenv").config();
-// Start an Express app to run the server
+// Enable CORS for frontend
+const cors = require("cors");
+
+// Initialize the app
 const app = express();
-// Making sure we can use data sent as JSON
+
+// Middleware
 app.use(express.json());
-// Serve all static files from the 'public' folder
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.static(path.join(__dirname, "public")));
-const cors = require('cors');
 
 // Use property-related functions
 const { getAllProperties, getPropertyByType, postPropertyReview, getPropertyById,getPropertyReviews, deleteReview, addPropertyToFavourites, updateUser } 
